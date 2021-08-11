@@ -1,0 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300&display=swap');
+
+$board-bg-color: rgb(133, 189, 170);
+$appbar-bg-color: rgb(95, 163, 140);
+$column-bg-color: rgb(238, 238, 238);
+$column-border-radius: 10px;
+$column-header-height: 36px;
+$column-footer-height: 36px;
+$card-border-radius: 5px;
+$gap: 10px;
+
+body {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.3cm;
+  font-family: source-sans-pro, sans-serif;
+}
+
+.trello-web {
+  height: 100vh;
+  display: grid;
+  grid-template-rows: 40px 50px 1fr;
+  background-color: $board-bg-color;
+
+  .navbar {
+    padding-left: $gap;
+    display: flex;
+    align-items: center;
+    &.app {
+      background-color: $appbar-bg-color;
+      font-size: 1.5rem;
+    }
+    &.board {
+      background-color: $board-bg-color;
+      font-size: 1.5rem;
+    }
+  }
+
+  .board-columns {
+    display: flex;
+    overflow-x: auto;
+    &::-webkit-scrollbar {
+      -webkit-appearance: none;
+    }
+    &::-webkit-scrollbar:horizontal {
+      height: 11px;
+    }
+    &::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      background-color: darken($color: $column-bg-color, $amount: 12) ;
+      border-right: 5px solid $column-bg-color;
+    }
+  }
+
+  .column {
+    flex: 0 0 auto;
+    width: 300px;
+    height: calc(100% - #{$gap});
+    margin-left: $gap;
+    > * {
+      list-style-type: none;
+      background-color: darken($column-bg-color, $amount: 10) ;
+      padding: 0 8px;
+    }
+    header {
+      padding-left: 15px;
+      height: $column-header-height;
+      line-height: $column-header-height;
+      font-size: 16px;
+      font-weight: bold;
+      border-top-left-radius: $column-border-radius;
+      border-top-right-radius: $column-border-radius;
+
+    }
+
+    footer {
+      padding-left: 15px;
+      height: $column-header-height;
+      line-height: $column-header-height;
+      font-size: 16px;
+      font-weight: bold;
+      border-bottom-left-radius: $column-border-radius;
+      border-bottom-right-radius: $column-border-radius;
+    }
+
+    ul {
+      margin: 0;
+      max-height: calc(100% - #{$column-header-height} - #{$column-footer-height});
+      overflow-y: auto;
+      &::-webkit-scrollbar {
+        -webkit-appearance: none;
+      }
+      &::-webkit-scrollbar:vertical {
+        width: 8px;
+      }
+      &::-webkit-scrollbar-thumb {
+        background-color: darken($color: $column-bg-color, $amount: 12) ;
+        border-right: 5px solid $column-bg-color;
+      }
+      li {
+        background-color: white;
+        padding: $gap;
+        border-radius: $card-border-radius;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+        &:not(:last-child){
+          margin-bottom: $gap;
+        }
+      }
+      img {
+        display: block;
+        width: calc(100% + 2*#{$gap});
+        margin: -$gap 0 0 (-$gap);
+        border-top-left-radius: $card-border-radius;
+        border-top-right-radius: $card-border-radius;
+      }
+    }
+  }
+}
