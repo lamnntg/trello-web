@@ -1,0 +1,25 @@
+@import '_setting.scss';
+
+$column-border-radius: 10px;
+$column-header-height: 36px;
+$column-footer-height: 36px;
+$column-bg-color: rgb(238, 238, 238);
+$card-border-radius: 5px;
+
+
+.board-columns {
+  display: flex;
+  overflow-x: auto;
+  &::-webkit-scrollbar {
+    -webkit-appearance: none;
+  }
+  &::-webkit-scrollbar:horizontal {
+    height: 11px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: darken($color: $column-bg-color, $amount: 12) ;
+    border-right: 5px solid $column-bg-color;
+  }
+}
+

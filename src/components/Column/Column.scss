@@ -1,0 +1,65 @@
+@import '_setting.scss';
+
+$column-border-radius: 10px;
+$column-header-height: 36px;
+$column-footer-height: 36px;
+$column-bg-color: rgb(238, 238, 238);
+$card-border-radius: 5px;
+
+
+.column {
+    flex: 0 0 auto;
+    width: 300px;
+    height: calc(100% - #{$gap});
+    margin-left: $gap;
+    > * {
+      list-style-type: none;
+      background-color: darken($column-bg-color, $amount: 10) ;
+      padding: 0 8px;
+    }
+    header {
+      padding-left: 15px;
+      height: $column-header-height;
+      line-height: $column-header-height;
+      font-size: 16px;
+      font-weight: bold;
+      border-top-left-radius: $column-border-radius;
+      border-top-right-radius: $column-border-radius;
+  
+    }
+  
+    footer {
+      padding-left: 15px;
+      height: $column-header-height;
+      line-height: $column-header-height;
+      font-size: 16px;
+      font-weight: bold;
+      border-bottom-left-radius: $column-border-radius;
+      border-bottom-right-radius: $column-border-radius;
+    }
+  
+    ul.task-list {
+      margin: 0;
+      max-height: calc(100% - #{$column-header-height} - #{$column-footer-height});
+      overflow-y: auto;
+      &::-webkit-scrollbar {
+        -webkit-appearance: none;
+      }
+      &::-webkit-scrollbar:vertical {
+        width: 8px;
+      }
+      &::-webkit-scrollbar-thumb {
+        background-color: darken($color: $column-bg-color, $amount: 12) ;
+        border-right: 5px solid $column-bg-color;
+      }
+    }
+    li {
+      background-color: white;
+      padding: $gap;
+      border-radius: $card-border-radius;
+      box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+      &:not(:last-child){
+        margin-bottom: $gap;
+      }
+    }
+  }
