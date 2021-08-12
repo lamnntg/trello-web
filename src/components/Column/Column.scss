@@ -6,10 +6,9 @@ $column-footer-height: 36px;
 $column-bg-color: rgb(238, 238, 238);
 $card-border-radius: 5px;
 
-
 .column {
     flex: 0 0 auto;
-    width: 300px;
+    width: 320px;
     height: calc(100% - #{$gap});
     margin-left: $gap;
     > * {
@@ -38,7 +37,7 @@ $card-border-radius: 5px;
       border-bottom-right-radius: $column-border-radius;
     }
   
-    ul.task-list {
+    ul.card-list {
       margin: 0;
       max-height: calc(100% - #{$column-header-height} - #{$column-footer-height});
       overflow-y: auto;
