@@ -8,8 +8,10 @@ $card-border-radius: 5px;
 
 
 .board-columns {
+  height: $navbar-content-height;
   display: flex;
   overflow-x: auto;
+  overflow-y: hidden;
   &::-webkit-scrollbar {
     -webkit-appearance: none;
   }
@@ -23,3 +25,13 @@ $card-border-radius: 5px;
   }
 }
 
+.columns-drop-preview {
+  background-color: rgba(255, 0, 43, 0.1);
+  border: 1px dashed #abc;
+  margin: 5px 45px 5px 5px;
+}
+
+.column-drag-handle{
+  cursor: move;
+  padding: 5px; 
+}
