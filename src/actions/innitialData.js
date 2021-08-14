@@ -30,31 +30,35 @@ export const initialData = {
               columnId: 'column-1',
               title: 'title card 3',
               cover: null
-            },            {
+            },
+            {
               id: 'card-4',
               boardId: 'board-1',
               columnId: 'column-1',
               title: 'title card 4',
               cover: null
-            },            {
+            },
+            {
               id: 'card-5',
               boardId: 'board-1',
               columnId: 'column-1',
               title: 'title card 5',
               cover: null
-            },            {
+            },
+            {
               id: 'card-6',
               boardId: 'board-1',
               columnId: 'column-1',
               title: 'title card 6',
               cover: null
-            },            {
+            },
+            {
               id: 'card-7',
               boardId: 'board-1',
               columnId: 'column-1',
               title: 'title card 7',
               cover: null
-            },
+            }
           ]
         },
         {
@@ -83,7 +87,7 @@ export const initialData = {
               columnId: 'column-2',
               title: 'title card 10',
               cover: null
-            },
+            }
           ]
         },
         {
@@ -112,10 +116,10 @@ export const initialData = {
               columnId: 'column-3',
               title: 'title card 13',
               cover: null
-            },
+            }
           ]
         }
       ]
-    },
-  ],
+    }
+  ]
 }
