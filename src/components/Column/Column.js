@@ -6,16 +6,14 @@ import Card from 'components/Card/Card';
 import { Container, Draggable } from 'react-smooth-dnd';
 
 function Column(props) {
-  const { column } = props;
+  const { column, onCardDrop } = props;
   const cards = column.card;
 
   //sort card
   cards.sort(function(a, b) {
     return column.cardOrder.indexOf(a.id) - column.cardOrder.indexOf(b.id);
   });
-  const onCardDrop = function(dropResult) {
-    console.log(dropResult);
-  };
+
   return (
     <div className="column">
       <header className="column-drag-handle">{props.column.title}</header>
@@ -25,7 +23,7 @@ function Column(props) {
           groupName="column"
           // onDragStart={e => console.log('drag started', e)}
           // onDragEnd={e => console.log('drag end', e)}
-          onDrop={e => onCardDrop(column.id, e)}
+          onDrop={dropResult => onCardDrop(column.id, dropResult)}
           getChildPayload={index => cards[index]}
           dragClass="card-ghost"
           dropClass="card-ghost-drop"
@@ -53,7 +51,11 @@ function Column(props) {
           )}
         </Container>
       </div>
-      <footer className="footer">footer</footer>
+      <footer className="footer">
+        <div className="footer-action">
+          <i className="fa fa-plus icon"></i>Add another card
+        </div>
+      </footer>
     </div>
   );
 }
