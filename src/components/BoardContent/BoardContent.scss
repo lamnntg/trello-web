@@ -35,3 +35,21 @@ $card-border-radius: 5px;
   cursor: move;
   padding: 5px; 
 }
+
+.add-new-column {
+  border-radius: $card-border-radius;
+  justify-content: center;
+  padding: 10px 15px;
+  width: 300px;
+  height: 32px;
+  line-height: 32px;
+  margin-left: $gap;
+  cursor: pointer;
+  color: rgb(240, 240, 240);
+  font-size: 15px;
+  background-color: hsla(0, 0%, 100%, .24);
+  &:hover {
+    color: white;
+    background-color: rgba(255, 255, 255, 0.445);
+  }
+}
