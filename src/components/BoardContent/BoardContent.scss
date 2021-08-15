@@ -12,6 +12,10 @@ $card-border-radius: 5px;
   display: flex;
   overflow-x: auto;
   overflow-y: hidden;
+  &::after {
+    content: '';
+    flex: 0 0 $gap;
+  }
   &::-webkit-scrollbar {
     -webkit-appearance: none;
   }
@@ -41,7 +45,6 @@ $card-border-radius: 5px;
   justify-content: center;
   padding: 10px 15px;
   width: 300px;
-  height: 32px;
   line-height: 32px;
   margin-left: $gap;
   cursor: pointer;
@@ -51,5 +54,33 @@ $card-border-radius: 5px;
   &:hover {
     color: white;
     background-color: rgba(255, 255, 255, 0.445);
+  }
+}
+.form-new-column {
+  padding: 10px 10px;
+  border-radius: $card-border-radius;
+  width: 300px;
+  max-width: 300px;
+  background-color: rgba(231, 231, 231, 0.507);
+  margin-left: $gap;
+  .input-new-column {
+    border-radius: $card-border-radius;
+    background-color: rgba(255, 255, 255, 0.425);
+  }
+  button {
+    border-radius: 4px;
+  }
+  span.cancel-add-column {
+    display: inline-block;
+    margin: 0 0 0px 10px;
+    justify-content: center;
+    text-align: center;
+    i {
+      font-size: 21px;
+      &:hover {
+        cursor: pointer;
+        color: rgba(255, 0, 0, 0.438);
+      }
+    }
   }
 }

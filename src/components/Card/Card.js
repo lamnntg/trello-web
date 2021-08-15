@@ -6,8 +6,8 @@ function Card(props) {
   const { card } = props;
   return (
     <div className="card-item">
-      {card.cover && 
-        <img 
+      {card.cover &&
+        <img
           src={card.cover}
           onMouseDown={(e) => e.preventDefault()}
         />}
