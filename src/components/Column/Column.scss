@@ -18,14 +18,51 @@ $column-height: calc(#{$navbar-content-height} - #{$gap * 2});
     padding: 0 8px;
   }
   header {
-    padding-left: 15px;
+    display: flex;
+    justify-content: space-between; 
+    font-weight: bold;
+    input {
+      width: 100%;
+      height: 100%;
+      background-color: inherit;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      &:focus {
+        background-color: white;
+      }
+    }
+    &.column-title {
+      font-size: 16px;
+    }
+    .column-drop-down {
+      height: 100%;
+
+      button.drop-down.btn{
+        padding: 0 10px;
+        font-weight: bold;
+        letter-spacing: 1px;
+        background-color:  darken($column-bg-color, $amount: 10);
+        color:  rgb(100, 99, 99);
+        font-size: 20px;
+        border: none;
+        height: 30px;
+        margin-top: -20px;
+        &::after{
+          content: '...';
+          border: none;
+        }
+        &:hover{
+          color:black;
+        }
+      }
+    }
+    padding-top: 5px;
     height: $column-header-height;
     line-height: $column-header-height;
-    font-size: 16px;
-    font-weight: bold;
     border-top-left-radius: $column-border-radius;
     border-top-right-radius: $column-border-radius;
-
+    padding-bottom: 5px;
   }
 
   footer {
