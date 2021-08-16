@@ -9,7 +9,7 @@ import './BoardContent.scss'
 import Column from 'components/Column/Column'
 
 import { initialData } from 'actions/innitialData'
-import { isEmpty } from 'lodash';
+import { defaultsDeep, isEmpty } from 'lodash';
 
 function BoardContent() {
   const [board, setBoard] = useState({});
@@ -95,6 +95,27 @@ function BoardContent() {
     setNewNameColumn('');
     toggleOpenNewColumnForm();
   }
+
+  const onUpdateColumn = (newColumnUpdate) => {
+    const columnIdToUpdate = newColumnUpdate.id;
+    const newColumns = [...columns];
+
+    const indexOfItemUpdate = newColumns.findIndex(i => i.id === columnIdToUpdate);
+
+    if (newColumnUpdate._destroy) {
+      newColumns.splice(indexOfItemUpdate, 1);
+    } else {
+      newColumns.splice(indexOfItemUpdate, 1, newColumnUpdate);
+    }
+
+    setColumns(newColumns);
+
+    let newBoard ={ ...board };
+    newBoard.columnOrder = newColumns.map(column => column.id);
+    newBoard.columns = newColumns.map(column => column);
+
+    setBoard(newBoard);
+  }
   return (
     <div className="board-columns">
       <Container
@@ -111,7 +132,7 @@ function BoardContent() {
         {columns.map((column, index) => {
           return (
             <Draggable key={index}>
-              <Column column={column} onCardDrop={onCardDrop} />
+              <Column column={column} onCardDrop={onCardDrop} onUpdateColumn={onUpdateColumn}/>
             </Draggable>
           );
         })}

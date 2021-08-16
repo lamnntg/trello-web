@@ -40,4 +40,21 @@ body {
   [contenteditable].form-control:focus {
     box-shadow: inset 0 -1px 0 #ddd;
   }
+
+  .btn:focus, .btn:active {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+  .dropdown-menu {
+    padding: 0;
+    min-width: 200px;
+    a.dropdown-item {
+      padding: 0 7px;
+      font-size: 14px;
+      border-radius: 3px;
+      &:active {
+        background-color: #888;
+      }
+    }
+  }
 }
