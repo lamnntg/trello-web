@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from 'react';
+import { React, useState, useEffect, useRef } from 'react';
 // import { Container, Draggable } from "react-smooth-dnd";
 import parse from 'html-react-parser';
 import { MODAL_ACTION_CLOSE, MODAL_ACTION_CONFIRM } from 'utilities/constants';
@@ -6,17 +6,28 @@ import './Column.scss'
 import Card from 'components/Card/Card';
 import ConfirmModal from 'components/Common/ConfirmModal';
 import { Container, Draggable } from 'react-smooth-dnd';
-import { Dropdown, Form } from 'react-bootstrap'
+import { Dropdown, Form, InputGroup, FormControl, Button } from 'react-bootstrap'
+import { cloneDeep } from 'lodash';
 
 function Column(props) {
   const { column, onCardDrop, onUpdateColumn } = props;
   const cards = column.card;
   const [ showConfirmModal, setShowConfirmModal ] = useState(false);
   const [ columnTitle, setColumnTitle ] = useState('');
+  const [ showAddCardForm, setShowAddCardForm ] = useState(false);
+  const [ newCardTitle, setNewCardTitle ] = useState('');
   //sort card
   cards.sort(function(a, b) {
     return column.cardOrder.indexOf(a.id) - column.cardOrder.indexOf(b.id);
   });
+
+  const newCardInputRef = useRef(null);
+
+  useEffect(() => {
+    if (showAddCardForm) {
+      newCardInputRef.current.focus();
+    }
+  }, [showAddCardForm])
 
   useEffect(() => {
     setColumnTitle(column.title);
@@ -58,6 +69,33 @@ function Column(props) {
     e.target.focus();
     e.target.select();
   }
+
+  const handleShowAddCardForm = () => {
+    setShowAddCardForm(!showAddCardForm);
+    if (showAddCardForm == false) {
+      setNewCardTitle('');
+    }
+  }
+
+  const addNewCard = () => {
+    if (!newCardTitle) {
+      newCardInputRef.current.focus();
+      return
+    }
+    const newCardToAdd = {
+      id: 'card-' + Math.random() * 5,
+      boardId: column.boardId,
+      title: newCardTitle.trim(),
+      columnId: column.id,
+      cover: null
+    }
+
+    let newColumn = cloneDeep(column);
+    newColumn.card.push(newCardToAdd);
+    newColumn.cardOrder.push(newCardToAdd.id);
+    onUpdateColumn(newColumn);
+    handleShowAddCardForm();
+  }
   return (
     <div className="column">
       <header className="column-drag-handle">
@@ -97,20 +135,11 @@ function Column(props) {
         <Container
           {...column.props}
           groupName="column"
-          // onDragStart={e => console.log('drag started', e)}
-          // onDragEnd={e => console.log('drag end', e)}
           onDrop={dropResult => onCardDrop(column.id, dropResult)}
           getChildPayload={index => cards[index]}
           dragClass="card-ghost"
           dropClass="card-ghost-drop"
           dragHandleSelector=".card-item"
-          // onDragEnter={() => {
-          //   console.log('drag enter:', column.id);
-          // }}
-          // onDragLeave={() => {
-          //   console.log('drag leave:', column.id);
-          // }}
-          // onDropReady={p => console.log('Drop ready: ', p)}
           dropPlaceholder={{
             animationDuration: 150,
             showOnTop: true,
@@ -126,11 +155,50 @@ function Column(props) {
             )
           )}
         </Container>
+        {showAddCardForm &&
+        <div className="add-new-card">
+          <InputGroup size="sm">
+            <FormControl aria-label="Small"
+              aria-describedby="inputGroup-sizing-sm"
+              placeholder="enter title edit card"
+              className="input-new-column"
+              ref={newCardInputRef}
+              value={newCardTitle}
+              onChange={(e) => setNewCardTitle(e.target.value)}
+              onKeyDown={
+                (e) => {
+                  if (e.key === 'Enter') {
+                    addNewCard();
+                  }
+                }
+              }
+            />
+          </InputGroup>
+        </div>
+        }
       </div>
       <footer className="footer">
-        <div className="footer-action">
-          <i className="fa fa-plus icon"></i>Add another card
-        </div>
+        { !showAddCardForm &&
+          <div className="footer-action" onClick={handleShowAddCardForm}>
+            <i className="fa fa-plus icon" ></i>Add another card
+          </div>
+        }
+        {showAddCardForm &&
+          <div className="btn-add-card">
+            <Button
+              variant="success"
+              className="button-add-card" size="sm"
+              onClick={addNewCard}
+            >
+              Add card
+            </Button>
+            <div className="cancel-add-card"
+              onClick={handleShowAddCardForm}
+            >
+              <i className="fa fa-times" ></i>
+            </div>
+          </div>
+        }
       </footer>
       <ConfirmModal
         show={showConfirmModal}

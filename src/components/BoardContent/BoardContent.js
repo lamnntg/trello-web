@@ -96,6 +96,7 @@ function BoardContent() {
     toggleOpenNewColumnForm();
   }
 
+  //props update card to column component
   const onUpdateColumn = (newColumnUpdate) => {
     const columnIdToUpdate = newColumnUpdate.id;
     const newColumns = [...columns];
@@ -116,6 +117,7 @@ function BoardContent() {
 
     setBoard(newBoard);
   }
+
   return (
     <div className="board-columns">
       <Container
@@ -132,7 +134,10 @@ function BoardContent() {
         {columns.map((column, index) => {
           return (
             <Draggable key={index}>
-              <Column column={column} onCardDrop={onCardDrop} onUpdateColumn={onUpdateColumn}/>
+              <Column column={column}
+                onCardDrop={onCardDrop}
+                onUpdateColumn={onUpdateColumn}
+              />
             </Draggable>
           );
         })}
