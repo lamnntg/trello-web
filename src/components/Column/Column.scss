@@ -10,8 +10,9 @@ $column-height: calc(#{$navbar-content-height} - #{$gap * 2});
 .column {
   flex: 0 0 auto;
   width: 320px;
-  height: $column-height;
+  max-height: $column-height;
   margin-left: $gap;
+
   > * {
     list-style-type: none;
     background-color: darken($column-bg-color, $amount: 10) ;
@@ -64,10 +65,17 @@ $column-height: calc(#{$navbar-content-height} - #{$gap * 2});
     border-top-right-radius: $column-border-radius;
     padding-bottom: 5px;
   }
-
+  .add-new-card {
+    padding-bottom: 10px;
+    input {
+      display: block;
+      height: 40px;
+      border-radius: 5px;
+    }
+  }
   footer {
-    padding-left: 15px;
-    height: $column-header-height;
+    padding-left: 10px 10px 8px 0px;
+    max-height: 90px;
     line-height: $column-header-height;
     font-size: 16px;
     font-weight: bold;
@@ -79,6 +87,27 @@ $column-height: calc(#{$navbar-content-height} - #{$gap * 2});
       cursor: pointer;
       &:hover {
         color: black;
+      }
+    }
+
+    .btn-add-card{
+      display: flex;
+      padding-bottom: 10px
+    }
+    button {
+      height: 30px;
+    }
+    .cancel-add-card {
+      height: 30px;
+      margin-left: 10px;
+      justify-content: center;
+      text-align: center;
+      i {
+        font-size: 25px;
+      }
+      &:hover {
+        cursor: pointer;
+        color: coral;
       }
     }
   }
