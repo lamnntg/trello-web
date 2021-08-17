@@ -123,7 +123,7 @@ function Column(props) {
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
-              <Dropdown.Item>Add card</Dropdown.Item>
+              <Dropdown.Item onClick={handleShowAddCardForm}>Add card</Dropdown.Item>
               <Dropdown.Item onClick={toggleShowConfirmModal}>Remove column</Dropdown.Item>
               <Dropdown.Item>Remove all card</Dropdown.Item>
               <Dropdown.Item>Something else</Dropdown.Item>
