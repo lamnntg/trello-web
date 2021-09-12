@@ -9,7 +9,7 @@ export const initialData = {
           boardId: 'board-1',
           title: 'Todo column',
           cardOrder: ['card-7', 'card-2', 'card-3', 'card-4', 'card-5', 'card-6', 'card-1'],
-          card: [
+          cards: [
             {
               id: 'card-1',
               boardId: 'board-1',
