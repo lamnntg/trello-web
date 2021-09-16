@@ -17,10 +17,12 @@ function Column(props) {
   const [ showAddCardForm, setShowAddCardForm ] = useState(false);
   const [ newCardTitle, setNewCardTitle ] = useState('');
   //sort card
-  cards.sort(function(a, b) {
-    return column.cardOrder.indexOf(a._id) - column.cardOrder.indexOf(b._id);
-  });
-
+  if (cards && column.cardOrder) {
+    cards.sort(function(a, b) {
+      return column.cardOrder.indexOf(a._id) - column.cardOrder.indexOf(b._id);
+    });
+  }
+  
   const newCardInputRef = useRef(null);
 
   useEffect(() => {
@@ -147,13 +149,16 @@ function Column(props) {
           }}
           dropPlaceholderAnimationDuration={200}
         >
-          {cards.map((card, index) =>
+          {cards 
+          ? cards.map((card, index) =>
             (
               <Draggable key={index}>
                 <Card card={card} />
               </Draggable>
             )
-          )}
+          )
+          : null
+          }
         </Container>
         {showAddCardForm &&
         <div className="add-new-card">

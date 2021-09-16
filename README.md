@@ -20,3 +20,10 @@
 
 -HTML React Parser để render html truyền từ param
 
+- Kinh nghiệm fix bug lúc 1h - 17/09/2021 
+
++ kiểm tra lại các đầu dữ liệu trả về từ server xem đã đúng chuẩn -> tránh trường hợp object nằm trong object
++ theo dõi dữ liệu của các component thông qua reactjs dev tool
++ chú ý tới luồng xử lý và tiến hành debug từ nhỏ -> lớn 
++ So sánh với dự liệu khởi tạo để có cái nhìn chính xác nhất 
+

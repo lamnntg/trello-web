@@ -10,7 +10,7 @@ import Column from 'components/Column/Column'
 
 import { initialData } from 'actions/innitialData'
 import { defaultsDeep, isEmpty } from 'lodash';
-import { fetchApi } from 'actions/Api';
+import { fetchBoard, createColumn } from 'actions/Api';
 
 function BoardContent() {
   const [board, setBoard] = useState({});
@@ -23,7 +23,7 @@ function BoardContent() {
   useEffect(() => {
     const boardFromDb = initialData.board.find(board => board.id === 'board-1');
     console.log(boardFromDb);
-    fetchApi('613cec37b406417b13c2d9a2')
+    fetchBoard('613cec37b406417b13c2d9a2')
       .then(boardDB => {
         setBoard(boardDB.result);
         boardDB.result.columns.sort(function(a, b) {
@@ -79,23 +79,26 @@ function BoardContent() {
       return
     }
     const newColumnToAdd = {
-      _id: 'column-' + Math.random() * 5,
       boardId: board._id,
       title: newNameColumn,
-      cardOrder: [],
-      card: []
     }
-    let newColumns = [...columns];
-    newColumns.push(newColumnToAdd);
-    setColumns(newColumns);
 
-    let newBoard ={ ...board };
-    newBoard.columnOrder = newColumns.map(column => column._id);
-    newBoard.columns = newColumns.map(column => column);
+    createColumn(newColumnToAdd).then(newColumn => {
+      console.log(newColumn);
+      let newColumns = [...columns];
 
-    setBoard(newBoard);
-    setNewNameColumn('');
-    toggleOpenNewColumnForm();
+      newColumns.push(newColumn.result);
+      setColumns(newColumns);
+
+      let newBoard ={ ...board };
+      newBoard.columnOrder = newColumns.map(column => column._id);
+      newBoard.columns = newColumns.map(column => column);
+  
+      setBoard(newBoard);
+      console.log(newBoard);
+      setNewNameColumn('');
+      toggleOpenNewColumnForm();
+    });
   }
 
   //props update card to column component
