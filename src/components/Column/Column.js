@@ -8,19 +8,22 @@ import ConfirmModal from 'components/Common/ConfirmModal';
 import { Container, Draggable } from 'react-smooth-dnd';
 import { Dropdown, Form, InputGroup, FormControl, Button } from 'react-bootstrap'
 import { cloneDeep } from 'lodash';
+import { createCard, updateColumn } from 'actions/Api/index';
 
 function Column(props) {
   const { column, onCardDrop, onUpdateColumn } = props;
-  const cards = column.card;
+  const cards = column.cards;
   const [ showConfirmModal, setShowConfirmModal ] = useState(false);
   const [ columnTitle, setColumnTitle ] = useState('');
   const [ showAddCardForm, setShowAddCardForm ] = useState(false);
   const [ newCardTitle, setNewCardTitle ] = useState('');
   //sort card
-  cards.sort(function(a, b) {
-    return column.cardOrder.indexOf(a.id) - column.cardOrder.indexOf(b.id);
-  });
-
+  if (cards && column.cardOrder) {
+    cards.sort(function(a, b) {
+      return column.cardOrder.indexOf(a._id) - column.cardOrder.indexOf(b._id);
+    });
+  }
+  
   const newCardInputRef = useRef(null);
 
   useEffect(() => {
@@ -42,11 +45,21 @@ function Column(props) {
   //   onUpdateColumn(newColumn);
   // }, [columnTitle])
   const handleOnBlur = () => {
+    const cardsOfColumn = column.cards; 
     const newColumn = {
       ...column,
       title: columnTitle
     }
-    onUpdateColumn(newColumn);
+    if (column.title !== columnTitle) {
+      // call api
+      updateColumn(newColumn._id, newColumn).then((updatedColumn) => {
+        let dataColumn = {
+          ...updatedColumn.result,
+          cards: cardsOfColumn
+        }
+        onUpdateColumn(dataColumn);
+      });
+    }
   }
   const onAction = (action) => {
     if (action == MODAL_ACTION_CLOSE) {
@@ -55,9 +68,11 @@ function Column(props) {
     if (action == MODAL_ACTION_CONFIRM) {
       const newColumn = {
         ...column,
-        _destroy: true
+        __destroy: true
       }
-      onUpdateColumn(newColumn);
+      updateColumn(newColumn._id, newColumn).then((updatedColumn) => {
+        onUpdateColumn(updatedColumn.result);
+      });
     }
     toggleShowConfirmModal();
   }
@@ -83,18 +98,19 @@ function Column(props) {
       return
     }
     const newCardToAdd = {
-      id: 'card-' + Math.random() * 5,
       boardId: column.boardId,
+      columnId: column._id,
       title: newCardTitle.trim(),
-      columnId: column.id,
-      cover: null
     }
-
-    let newColumn = cloneDeep(column);
-    newColumn.card.push(newCardToAdd);
-    newColumn.cardOrder.push(newCardToAdd.id);
-    onUpdateColumn(newColumn);
-    handleShowAddCardForm();
+    
+    createCard(newCardToAdd).then((newCard) => {
+      let newColumn = cloneDeep(column);
+      newColumn.cards.push(newCard);
+      newColumn.cardOrder.push(newCard._id);
+      onUpdateColumn(newColumn);
+      handleShowAddCardForm();
+    });
+   
   }
   return (
     <div className="column">
@@ -135,7 +151,7 @@ function Column(props) {
         <Container
           {...column.props}
           groupName="column"
-          onDrop={dropResult => onCardDrop(column.id, dropResult)}
+          onDrop={dropResult => onCardDrop(column._id, dropResult)}
           getChildPayload={index => cards[index]}
           dragClass="card-ghost"
           dropClass="card-ghost-drop"
@@ -147,13 +163,16 @@ function Column(props) {
           }}
           dropPlaceholderAnimationDuration={200}
         >
-          {cards.map((card, index) =>
+          {cards 
+          ? cards.map((card, index) =>
             (
               <Draggable key={index}>
                 <Card card={card} />
               </Draggable>
             )
-          )}
+          )
+          : null
+          }
         </Container>
         {showAddCardForm &&
         <div className="add-new-card">
