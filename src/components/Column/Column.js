@@ -8,6 +8,7 @@ import ConfirmModal from 'components/Common/ConfirmModal';
 import { Container, Draggable } from 'react-smooth-dnd';
 import { Dropdown, Form, InputGroup, FormControl, Button } from 'react-bootstrap'
 import { cloneDeep } from 'lodash';
+import { createCard, updateColumn } from 'actions/Api/index';
 
 function Column(props) {
   const { column, onCardDrop, onUpdateColumn } = props;
@@ -44,11 +45,21 @@ function Column(props) {
   //   onUpdateColumn(newColumn);
   // }, [columnTitle])
   const handleOnBlur = () => {
+    const cardsOfColumn = column.cards; 
     const newColumn = {
       ...column,
       title: columnTitle
     }
-    onUpdateColumn(newColumn);
+    if (column.title !== columnTitle) {
+      // call api
+      updateColumn(newColumn._id, newColumn).then((updatedColumn) => {
+        let dataColumn = {
+          ...updatedColumn.result,
+          cards: cardsOfColumn
+        }
+        onUpdateColumn(dataColumn);
+      });
+    }
   }
   const onAction = (action) => {
     if (action == MODAL_ACTION_CLOSE) {
@@ -57,9 +68,11 @@ function Column(props) {
     if (action == MODAL_ACTION_CONFIRM) {
       const newColumn = {
         ...column,
-        _destroy: true
+        __destroy: true
       }
-      onUpdateColumn(newColumn);
+      updateColumn(newColumn._id, newColumn).then((updatedColumn) => {
+        onUpdateColumn(updatedColumn.result);
+      });
     }
     toggleShowConfirmModal();
   }
@@ -85,18 +98,19 @@ function Column(props) {
       return
     }
     const newCardToAdd = {
-      _id: 'card-' + Math.random() * 5,
       boardId: column.boardId,
-      title: newCardTitle.trim(),
       columnId: column._id,
-      cover: null
+      title: newCardTitle.trim(),
     }
-
-    let newColumn = cloneDeep(column);
-    newColumn.cards.push(newCardToAdd);
-    newColumn.cardOrder.push(newCardToAdd._id);
-    onUpdateColumn(newColumn);
-    handleShowAddCardForm();
+    
+    createCard(newCardToAdd).then((newCard) => {
+      let newColumn = cloneDeep(column);
+      newColumn.cards.push(newCard);
+      newColumn.cardOrder.push(newCard._id);
+      onUpdateColumn(newColumn);
+      handleShowAddCardForm();
+    });
+   
   }
   return (
     <div className="column">

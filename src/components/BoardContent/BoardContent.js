@@ -108,7 +108,7 @@ function BoardContent() {
 
     const indexOfItemUpdate = newColumns.findIndex(i => i._id === columnIdToUpdate);
 
-    if (newColumnUpdate._destroy) {
+    if (newColumnUpdate.__destroy) {
       newColumns.splice(indexOfItemUpdate, 1);
     } else {
       newColumns.splice(indexOfItemUpdate, 1, newColumnUpdate);
