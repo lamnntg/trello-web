@@ -9,8 +9,8 @@ import './BoardContent.scss'
 import Column from 'components/Column/Column'
 
 import { initialData } from 'actions/innitialData'
-import { defaultsDeep, isEmpty } from 'lodash';
-import { fetchBoard, createColumn } from 'actions/Api';
+import { defaultsDeep, isEmpty, cloneDeep } from 'lodash';
+import { fetchBoard, createColumn, updateColumn, updateBoard, updateCard } from 'actions/Api';
 
 function BoardContent() {
   const [board, setBoard] = useState({});
@@ -21,16 +21,18 @@ function BoardContent() {
   const newColumnInputRef = useRef(null);
 
   useEffect(() => {
-    const boardFromDb = initialData.board.find(board => board.id === 'board-1');
-    console.log(boardFromDb);
+    // const boardFromDb = initialData.board.find(board => board.id === 'board-1');
+    // console.log(boardFromDb);
     fetchBoard('613cec37b406417b13c2d9a2')
       .then(boardDB => {
-        setBoard(boardDB.result);
-        boardDB.result.columns.sort(function(a, b) {
-          return boardFromDb.columnOrder.indexOf(a.id) - boardFromDb.columnOrder.indexOf(b.id);
+        let boardApi = boardDB.result;
+        boardApi.columns.sort(function(a, b) {
+          return boardApi.columnOrder.indexOf(a._id) - boardApi.columnOrder.indexOf(b._id);
         });
-        setColumns(boardDB.result.columns);
-        console.log(boardDB.result);
+
+        setBoard(boardApi);
+        setColumns(boardApi.columns);
+        console.log(boardApi);
       });
   }, []);
 
@@ -45,15 +47,28 @@ function BoardContent() {
   }
 
   const onColumnDrop = (dropResult) => {
-    let newColumns = [...columns];
+    let newColumns = [...columns]; // spead operator
+
     newColumns = applyDrag(newColumns, dropResult);
     setColumns(newColumns);
 
-    let newBoard ={ ...board };
+    let newBoard = { ...board }; // spead operator
     newBoard.columnOrder = newColumns.map(column => column._id);
     newBoard.columns = newColumns.map(column => column);
-
-    setBoard(newBoard);
+    
+    updateBoard(newBoard._id, { 
+      title: newBoard.title,
+      columnOrder: newBoard.columnOrder,
+    }).then(updatedBoard => {
+      const updateBoardData = {
+        ...updatedBoard.result,
+        columns: newColumns.columns,
+      }
+      setBoard(updateBoardData);
+    }).catch(err => {
+      console.log(err);
+      setBoard({ ...board });
+    });
   }
 
   const onCardDrop = function(columnId, dropResult) {
@@ -62,7 +77,30 @@ function BoardContent() {
       let currentColumn = newColumns.find(column => column._id === columnId);
       currentColumn.cards = applyDrag(currentColumn.cards, dropResult);
       currentColumn.cardOrder = currentColumn.cards.map(i => i._id);
+
       setColumns(newColumns);
+      if (dropResult.addedIndex != null && dropResult.removedIndex != null) {
+        updateColumn(columnId, currentColumn)
+        .then(updatedColumn => {
+          //todo handle
+        })
+        .catch(err => {
+          //todo handle
+        });
+      } else {
+        let currentCard = dropResult.payload;
+        updateColumn(columnId, currentColumn);
+        if (dropResult.addedIndex != null) {
+          let newCard = {
+            ...currentCard,            
+            columnId: columnId,
+          }
+          updateCard(currentCard._id, newCard)
+            .then((updatedCard) => {
+              //todo handle
+            })
+        } 
+      }
     }
   };
 
@@ -90,11 +128,9 @@ function BoardContent() {
       newColumns.push(newColumn.result);
       setColumns(newColumns);
 
-      let newBoard ={ ...board };
+      let newBoard = { ...board };
       newBoard.columnOrder = newColumns.map(column => column._id);
       newBoard.columns = newColumns.map(column => column);
-  
-      setBoard(newBoard);
       console.log(newBoard);
       setNewNameColumn('');
       toggleOpenNewColumnForm();
@@ -194,4 +230,5 @@ function BoardContent() {
     </div>
   );
 }
+
 export default BoardContent;
