@@ -105,8 +105,8 @@ function Column(props) {
     
     createCard(newCardToAdd).then((newCard) => {
       let newColumn = cloneDeep(column);
-      newColumn.cards.push(newCard);
-      newColumn.cardOrder.push(newCard._id);
+      newColumn.cards.push(newCard.result);
+      newColumn.cardOrder.push(newCard.result._id);
       onUpdateColumn(newColumn);
       handleShowAddCardForm();
     });
