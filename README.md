@@ -1,5 +1,7 @@
 # Doc
 
+Deploy In : https://trello-lamnntug.web.app/
+
 -Cấu hình thư mục bằng jsconfig.json
     với "baseUrl": "./src" 
 
