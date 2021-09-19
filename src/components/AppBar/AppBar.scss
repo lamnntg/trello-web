@@ -2,11 +2,88 @@
 
 $appbar-bg-color: rgb(95, 163, 140);
 
+* {
+    list-style: none;
+}
 .navbar-app {
-    padding-left: $gap;
+    padding-left: 5px;
     display: flex;
     align-items: center;
     background-color: $appbar-bg-color;
     font-size: 1.5rem;
     height: $navbar-app-height;
+    justify-content: space-between;
+}
+.navbar-list-btn {
+    display: flex;
+    height: 85%;
+}
+
+.button-nav {
+    margin-right: 5px;
+    border-radius: 3px;
+    background-color: rgba($color: #ffffff, $alpha: 0.5);
+    display: inline-block;
+    width: 40px;
+    color: white;
+    text-align: center;
+    position: relative;
+    i {
+        text-align: center;
+        justify-content: center;
+        display: inline-block;
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+    &:hover {
+        cursor: pointer;
+        background-color: rgba($color: #ddd8d8, $alpha: 0.5);
+        i {
+            color: white;
+        }
+    }
+}
+
+.logo {
+    height: 3vh;
+}
+
+.logo-title {
+    display: inline-block;
+    font-size: 1.5rem;
+    font-family: 'Grechen Fuemen', cursive;
+    padding-left: 7px;
+}
+
+.navbar-app__logo {
+  width: 200px;
+  position: absolute;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  left: calc(50vw - 100px);
+}
+.search-nav {
+    border: none;
+    border-radius: 3px;
+    font-size: 15px;
+    display: inline-block;
+    padding-left: 5px;
+    background-color: rgba($color: #ffffff, $alpha: 0.5);
+    color: white;
+}
+
+input {
+    outline: 0;
+    border-color: transparent;
+}
+
+input:focus {
+    border-color: transparent;
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: white;
+    opacity: 1; /* Firefox */
 }

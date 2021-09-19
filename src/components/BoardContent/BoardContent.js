@@ -26,10 +26,12 @@ function BoardContent() {
     fetchBoard('613cec37b406417b13c2d9a2')
       .then(boardDB => {
         let boardApi = boardDB.result;
-        boardApi.columns.sort(function(a, b) {
-          return boardApi.columnOrder.indexOf(a._id) - boardApi.columnOrder.indexOf(b._id);
-        });
-
+        if (boardApi) {
+          boardApi.columns.sort(function(a, b) {
+            return boardApi.columnOrder.indexOf(a._id) - boardApi.columnOrder.indexOf(b._id);
+          });
+        }
+      
         setBoard(boardApi);
         setColumns(boardApi.columns);
         console.log(boardApi);
