@@ -1,5 +1,5 @@
 # Doc
-
+@@ Hết chỗ note nên viết tạm vào đây để đọc lại @@
 Deploy In : https://trello-lamnntug.web.app/
 
 -Cấu hình thư mục bằng jsconfig.json
